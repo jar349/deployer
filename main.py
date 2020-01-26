@@ -15,5 +15,5 @@ async def homepage(request):
 async def basic_help(request):
     return PlainTextResponse(
         "The deploy chatop can create deployments on your github repos and PRs:\n\n" +
-        "  `.deploy PR_URL will create a deployment on the PR at the given PR_URL`"
+        "  `.deploy PR_URL will create a deployment on the PR at the given PR_URL`\n"
     )
