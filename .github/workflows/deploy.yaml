@@ -14,8 +14,8 @@ jobs:
         run: |
           docker tag jar349/deployer:${{ github.sha }} docker.pkg.github.com/jar349/deployer/deployer:${{ github.sha }}
           docker tag jar349/deployer:${{ github.sha }} docker.pkg.github.com/jar349/deployer/deployer:latest
-          docker push docker.pkg.github.com/jar349/pyslackops/pyslackops:${{ github.sha }}
-          docker push docker.pkg.github.com/jar349/pyslackops/pyslackops:latest
+          docker push docker.pkg.github.com/jar349/deployer/deployer:${{ github.sha }}
+          docker push docker.pkg.github.com/jar349/deployer/deployer:latest
   deploy:
     name: Start new deployer Docker Container
     needs: build
@@ -36,4 +36,4 @@ jobs:
       - name: Start new deployer container
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: ssh deployer@ruiz.house "docker login -u $GITHUB_ACTOR -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com; docker run --name deployer --detach --network main --restart always -p 1143:80 docker.pkg.github.com/jar349/deployer/deployer:${{ github.sha }}"
+        run: ssh deployer@ruiz.house "docker login -u $GITHUB_ACTOR -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com; docker run --name deployer --detach --network main --restart always -p 1143:80 -e "DEPLOYMENT_GITHUB_PAT=${{ secrets.DEPLOYER_GITHUB_PAT }}" docker.pkg.github.com/jar349/deployer/deployer:${{ github.sha }}"
