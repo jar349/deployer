@@ -1,3 +1,10 @@
-FROM tiangolo/uvicorn-gunicorn-starlette:python3.7
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
 
-COPY . /app
+RUN pip install pipenv
+
+WORKDIR /app
+
+COPY Pipfile* ./
+RUN pipenv install --system
+
+COPY . .
